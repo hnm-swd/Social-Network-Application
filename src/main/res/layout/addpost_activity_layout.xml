@@ -22,7 +22,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:layout_marginTop="20dp">
 
                 <GridLayout
                     android:layout_width="match_parent"
@@ -37,7 +38,7 @@
                         android:layout_row="0"
                         android:layout_column="1"
                         android:layout_margin="10dp"
-                        android:text="Bài viết mới"
+                        android:text="BÀI VIẾT MỚI"
                         android:textColor="@color/black"
                         android:textSize="20dp"
                         android:textStyle="bold"
@@ -98,11 +99,13 @@
                     android:id="@+id/btnCancel"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
+                    android:layout_row="0"
+                    android:layout_column="0"
                     android:layout_margin="10dp"
                     android:background="@color/white"
+                    android:backgroundTint="@null"
                     android:text="Hủy"
-                    android:textSize="15dp"
-                    android:backgroundTint="@null"/>
+                    android:textSize="18dp" />
             </RelativeLayout>
 
             <!-- Divider Line -->
@@ -144,7 +147,7 @@
                 <EditText
                     android:id="@+id/editText"
                     android:layout_width="match_parent"
-                    android:layout_height="318dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@null"
                     android:gravity="top"
@@ -157,22 +160,24 @@
 
     <!-- Fixed Post Button and TextView -->
     <FrameLayout
-        android:layout_width="385dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp">
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TableRow>
-
+            <TableRow
+                android:layout_height="50dp"
+                android:layout_width="wrap_content">
                 <TextView
-                    android:layout_width="254dp"
-                    android:layout_height="match_parent"
                     android:paddingLeft="20dp"
+                    android:layout_width="292dp"
+                    android:layout_height="50dp"
                     android:text="Mọi người có thể xem và phản hồi"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:gravity="left|center"
+                    android:textSize="15dp"/>
 
                 <Button
                     android:id="@+id/btnPost"
@@ -183,5 +188,6 @@
             </TableRow>
         </TableLayout>
     </FrameLayout>
+
 
 </LinearLayout>
