@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+
     <!-- ScrollView wrapping content -->
     <ScrollView
         android:layout_width="match_parent"
@@ -83,14 +84,14 @@
 
                     <ImageView
                         android:id="@+id/ImageView"
-                        android:layout_width="73dp"
+                        android:layout_width="83dp"
                         android:layout_height="40dp"
                         android:layout_row="1"
                         android:layout_column="2"
                         android:layout_gravity="top"
                         android:layout_margin="10dp"
-                        android:src="@drawable/image_upload"
-                        android:contentDescription="Add Image" />
+                        android:contentDescription="Add Image"
+                        android:src="@drawable/image_upload" />
                 </GridLayout>
 
                 <Button
@@ -100,7 +101,8 @@
                     android:layout_margin="10dp"
                     android:background="@color/white"
                     android:text="Hủy"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:backgroundTint="@null"/>
             </RelativeLayout>
 
             <!-- Divider Line -->
@@ -119,14 +121,16 @@
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp">
 
                 <LinearLayout
                     android:id="@+id/imageContainer"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:layout_marginRight="10dp">
 
                     <!-- This will hold the dynamically uploaded images -->
 
@@ -153,18 +157,20 @@
 
     <!-- Fixed Post Button and TextView -->
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="385dp"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp">
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TableRow>
+
                 <TextView
-                    android:paddingLeft="20dp"
-                    android:layout_width="292dp"
+                    android:layout_width="254dp"
                     android:layout_height="match_parent"
+                    android:paddingLeft="20dp"
                     android:text="Mọi người có thể xem và phản hồi"
                     android:textColor="@color/black" />
 
