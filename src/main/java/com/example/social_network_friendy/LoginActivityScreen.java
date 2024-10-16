@@ -3,17 +3,14 @@ package com.example.social_network_friendy;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivityScreen extends Activity {
+public class RegisterActivityScreen extends Activity {
+
     private static final String SHARED_PREF_NAME_USER = "myprefuser";
     private static final String KEY_NAME_USER = "nameuser";
     private static final String KEY_EMAIL = "email";
@@ -24,75 +21,50 @@ public class LoginActivityScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity_layout);
+        setContentView(R.layout.register_activity_layout);
 
-        // Khởi tạo SharedPreferences
+        // Set up login text click listener
+        TextView chontextviewdangnhap = findViewById(R.id.textlogin);
+        chontextviewdangnhap.setOnClickListener(view -> {
+            Intent intentlogin = new Intent(RegisterActivityScreen.this, LoginActivityScreen.class);
+            startActivity(intentlogin);
+        });
+
+        // Connect to UI elements
+        EditText tennguoidung = findViewById(R.id.edtuser);
+        EditText emaildangki = findViewById(R.id.edtemail);
+        EditText matkhau = findViewById(R.id.edtpassword);
+        EditText xacnhanmatkhau = findViewById(R.id.edtconfirmpassword);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME_USER, MODE_PRIVATE);
+        Button chonnutdangki = findViewById(R.id.btncreateaccount);
 
-        // Kết nối phần tử trong layout login
-        EditText nhapsdtemail = findViewById(R.id.edtphoneemail);
-        EditText nhapmatkhau = findViewById(R.id.edtpassword);
-        Button nutdangnhap = findViewById(R.id.btnlogin);
+        // Set up create account button click listener
+        chonnutdangki.setOnClickListener(view -> {
+            String username = tennguoidung.getText().toString();
+            String email = emaildangki.getText().toString();
+            String password = matkhau.getText().toString();
+            String confirmPassword = xacnhanmatkhau.getText().toString();
+            if(confirmPassword.length()<=20&&confirmPassword.length()>=8){
+                // Check if passwords match
+                if (password.equals(confirmPassword)) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(KEY_NAME_USER, username);
+                    editor.putString(KEY_EMAIL, email);
+                    editor.putString(KEY_PASSWORD, password);
+                    editor.putString(KEY_CONFIRMPASSWORD, confirmPassword);
+                    editor.apply();
 
-        // Đặt sự kiện cho nút btnlogin
-        nutdangnhap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String emailnhaptrangdangnhap = nhapsdtemail.getText().toString();
-                String passwordnhaptrangdangnhap = nhapmatkhau.getText().toString();
-
-                // Lấy thông tin đã đăng ký từ SharedPreferences
-                String nhapemaildangki = sharedPreferences.getString(KEY_EMAIL, null);
-                String nhapmatkhaudangki = sharedPreferences.getString(KEY_PASSWORD, null);
-
-                // So sánh
-                if (emailnhaptrangdangnhap.equals(nhapemaildangki) && passwordnhaptrangdangnhap.equals(nhapmatkhaudangki)) {
-                    Toast.makeText(LoginActivityScreen.this, "Xin chào!", Toast.LENGTH_SHORT).show();
-                    Intent intentmainscreen = new Intent(LoginActivityScreen.this, MainActivityScreen.class);
-                    intentmainscreen.putExtra("nhaptennguoidungdangki", nhapemaildangki);
-                    startActivity(intentmainscreen);
+                    Toast.makeText(RegisterActivityScreen.this, "Đã tạo tài khoản thành công", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivityScreen.this, LoginActivityScreen.class);
+                    startActivity(intent);
                 } else {
-                    Toast.makeText(LoginActivityScreen.this, "Sai tên đăng nhập hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivityScreen.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+            else {
+                Toast.makeText(RegisterActivityScreen.this, "Mật khẩu phải từ 8-20 kí tự", Toast.LENGTH_SHORT).show();
 
-        // Kết nối với text Đăng ký
-        TextView chontextviewdangki = findViewById(R.id.textcreateaccount);
-        chontextviewdangki.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentcreateaccount = new Intent(LoginActivityScreen.this, RegisterActivityScreen.class);
-                startActivity(intentcreateaccount);
             }
         });
-
-        // Đăng nhập qua các logo mạng xã hội
-        ImageView facebook = findViewById(R.id.logofb);
-        ImageView insta = findViewById(R.id.logoinsta);
-        ImageView gmail = findViewById(R.id.logogmail);
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gotoUrl("https://vi-vn.facebook.com/");
-            }
-        });
-        insta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gotoUrl("https://www.instagram.com/");
-            }
-        });
-        gmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gotoUrl("https://workspace.google.com/intl/vi/gmail/");
-            }
-        });
-    }
-
-    private void gotoUrl(String s) {
-        Uri uri = Uri.parse(s);
-        startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 }
