@@ -1,6 +1,7 @@
 package com.example.social_network_friendy;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
+
+import androidx.cardview.widget.CardView;
 
 public class PostActivityScreen extends Activity {
 
@@ -87,33 +91,60 @@ public class PostActivityScreen extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            // Image selected successfully, handle the result here
             Uri selectedImage = data.getData();
 
-            // Dynamically create an ImageView for the uploaded image
+            // Tạo CardView cho ảnh
+            CardView cardView = new CardView(this);
+            cardView.setLayoutParams(new LinearLayout.LayoutParams(220, 220));
+            cardView.setCardElevation(4);
+            cardView.setCardBackgroundColor(Color.WHITE);
+            cardView.setRadius(20); // Bo góc cho CardView
+
+            // Thiết lập margin cho CardView
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) cardView.getLayoutParams();
+            params.setMargins(10, 10, 10, 10); // Khoảng cách giữa các CardView
+            cardView.setLayoutParams(params);
+
+            // Tạo RelativeLayout để chứa ImageView và ImageButton
+            RelativeLayout imageWrapper = new RelativeLayout(this);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            imageWrapper.setLayoutParams(layoutParams);
+
+            // Tạo ImageView để hiển thị ảnh đã tải lên
             ImageView uploadedImage = new ImageView(this);
-            uploadedImage.setLayoutParams(new LinearLayout.LayoutParams(200, 200));  // Set size for the image
-            uploadedImage.setImageURI(selectedImage);  // Display the selected image
+            RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            uploadedImage.setLayoutParams(imageParams);
+            uploadedImage.setImageURI(selectedImage);
+            uploadedImage.setScaleType(ImageView.ScaleType.CENTER_CROP); // Giúp ảnh vừa khít khung
 
-            // Create a delete button to remove the image
+            // Tạo nút xóa (ImageButton) và đặt nó nằm ở góc phải trên của ảnh
             ImageButton deleteButton = new ImageButton(this);
-            deleteButton.setLayoutParams(new LinearLayout.LayoutParams(50, 50));
-            deleteButton.setImageResource(android.R.drawable.ic_delete);  // Set delete icon
+            RelativeLayout.LayoutParams deleteParams = new RelativeLayout.LayoutParams(50, 50);
+            deleteParams.addRule(RelativeLayout.ALIGN_PARENT_END); // Canh phải
+            deleteParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);   // Canh trên
+            deleteButton.setLayoutParams(deleteParams);
+            deleteButton.setImageResource(android.R.drawable.ic_delete);
+            deleteButton.setBackgroundColor(Color.TRANSPARENT); // Để nền trong suốt
 
-            // Create a wrapper for the image and the delete button
-            LinearLayout imageWrapper = new LinearLayout(this);
-            imageWrapper.setOrientation(LinearLayout.VERTICAL);
+            // Thêm ImageView và ImageButton vào RelativeLayout
             imageWrapper.addView(uploadedImage);
             imageWrapper.addView(deleteButton);
 
-            // Add the imageWrapper to the imageContainer
-            imageContainer.addView(imageWrapper);
+            // Thêm RelativeLayout vào CardView
+            cardView.addView(imageWrapper);
 
-            // Handle image removal when delete button is clicked
+            // Thêm CardView vào imageContainer
+            imageContainer.addView(cardView);
+
+            // Xử lý sự kiện khi nút xóa được nhấn
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    imageContainer.removeView(imageWrapper);
+                    imageContainer.removeView(cardView); // Xóa CardView thay vì RelativeLayout
                 }
             });
         }
