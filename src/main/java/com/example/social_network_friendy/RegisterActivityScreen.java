@@ -21,16 +21,16 @@ public class RegisterActivityScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_account_activity_layout);
+        setContentView(R.layout.register_activity_layout);
 
-        // Set up login text click listener
+        // cài đặt nút khi nhấn vào textviewdangnhap thì chuyển sang màn hình đăng nhập
         TextView chontextviewdangnhap = findViewById(R.id.textlogin);
         chontextviewdangnhap.setOnClickListener(view -> {
             Intent intentlogin = new Intent(RegisterActivityScreen.this, LoginActivityScreen.class);
             startActivity(intentlogin);
         });
 
-        // Connect to UI elements
+        // kết nối tới layout
         EditText tennguoidung = findViewById(R.id.edtuser);
         EditText emaildangki = findViewById(R.id.edtemail);
         EditText matkhau = findViewById(R.id.edtpassword);
@@ -38,27 +38,32 @@ public class RegisterActivityScreen extends Activity {
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME_USER, MODE_PRIVATE);
         Button chonnutdangki = findViewById(R.id.btncreateaccount);
 
-        // Set up create account button click listener
+        // tạo các tên người đăng nhập, email, password với confirmpassword khi nhấn vào thì nhập để lấy so sánh
         chonnutdangki.setOnClickListener(view -> {
             String username = tennguoidung.getText().toString();
             String email = emaildangki.getText().toString();
             String password = matkhau.getText().toString();
             String confirmPassword = xacnhanmatkhau.getText().toString();
+            if(confirmPassword.length()<=20&&confirmPassword.length()>=8){
+                // kiểm tra xem password và confirmpassword có trùng với nhau không
+                if (password.equals(confirmPassword)) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(KEY_NAME_USER, username);
+                    editor.putString(KEY_EMAIL, email);
+                    editor.putString(KEY_PASSWORD, password);
+                    editor.putString(KEY_CONFIRMPASSWORD, confirmPassword);
+                    editor.apply();
 
-            // Check if passwords match
-            if (password.equals(confirmPassword)) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(KEY_NAME_USER, username);
-                editor.putString(KEY_EMAIL, email);
-                editor.putString(KEY_PASSWORD, password);
-                editor.putString(KEY_CONFIRMPASSWORD, confirmPassword);
-                editor.apply();
+                    Toast.makeText(RegisterActivityScreen.this, "Đã tạo tài khoản thành công", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivityScreen.this, LoginActivityScreen.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(RegisterActivityScreen.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                Toast.makeText(RegisterActivityScreen.this, "Mật khẩu phải từ 8-20 kí tự", Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(RegisterActivityScreen.this, "Đã tạo tài khoản thành công", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RegisterActivityScreen.this, LoginActivityScreen.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(RegisterActivityScreen.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
             }
         });
     }
