@@ -62,7 +62,7 @@ public class LoginActivityScreen extends Activity {
         chontextviewdangki.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentcreateaccount = new Intent(LoginActivityScreen.this, CreateAccountActivityScreen.class);
+                Intent intentcreateaccount = new Intent(LoginActivityScreen.this, RegisterActivityScreen.class);
                 startActivity(intentcreateaccount);
             }
         });
