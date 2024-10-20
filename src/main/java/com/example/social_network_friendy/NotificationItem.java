@@ -1,20 +1,17 @@
 package com.example.social_network_friendy;
 
-public class NotificationItem {
-    private String title;
-    private String time;
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 
-    public NotificationItem(String title, String time) {
-        this.title = title;
-        this.time = time;
-    }
+public class NotificationActivity extends AppCompatActivity {
 
-    public String getTitle() {
-        return title;
-    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_notification);
 
-    public String getTime() {
-        return time;
+        // You can add additional logic here to handle user interactions,
+        // such as loading notifications dynamically.
     }
 }
 
