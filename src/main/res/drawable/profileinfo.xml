@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Nền màu trắng -->
+    <solid android:color="@android:color/white" />
+
+    <!-- Viền màu xám nhạt (Light Gray) -->
+    <stroke
+        android:width="2dp"
+        android:color="#D3D3D3" />
+
+    <!-- Bo góc tròn 12dp -->
+    <corners android:radius="12dp" />
+</shape>
