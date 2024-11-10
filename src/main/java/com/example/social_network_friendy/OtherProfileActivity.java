@@ -14,8 +14,8 @@ public class OtherProfileActivity extends AppCompatActivity {
     private Button followButton;
     private boolean isFollowing = false; // Keep track of follow state
     private RecyclerView postsRecyclerView;
-    private Adapter adapter;
-    private ArrayList<Post> posts;
+    private Adapter_otherprofile adapterOtherprofile;
+    private ArrayList<Post_otherprofile> postOtherprofiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +41,14 @@ public class OtherProfileActivity extends AppCompatActivity {
         });
 
         // Initialize posts
-        posts = new ArrayList<>();
-//        posts.add(new Post("User1", "2 hours ago", "Hello World!", R.drawable.profileimage, R.drawable.postimage, 100, 50));
-//        posts.add(new Post("User2", "5 hours ago", "Sample Post", R.drawable.profileimage, R.drawable.postimage, 150, 30));
+        postOtherprofiles = new ArrayList<>();
+        postOtherprofiles.add(new Post_otherprofile("User1", "2 hours ago", "Hello World!", R.drawable.profileimage, R.drawable.img, 100, 50));
+        postOtherprofiles.add(new Post_otherprofile("User2", "5 hours ago", "Sample Post", R.drawable.profileimage, R.drawable.img, 150, 30));
 
         // Set up RecyclerView
-        adapter = new Adapter(this, posts);
+        adapterOtherprofile = new Adapter_otherprofile(this, postOtherprofiles);
         postsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postsRecyclerView.setAdapter(adapter);
+        postsRecyclerView.setAdapter(adapterOtherprofile);
     }
 
     private void updateFollowButton() {
