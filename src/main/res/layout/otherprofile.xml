@@ -61,6 +61,16 @@
             android:scaleType="centerCrop"
             android:src="@drawable/profileimage"
             />
+        <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profileImage"
+                android:layout_width="65dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+
+                android:src="@drawable/profileimage"
+
+                />
     </LinearLayout>
 
     <!-- Số người theo dõi -->
