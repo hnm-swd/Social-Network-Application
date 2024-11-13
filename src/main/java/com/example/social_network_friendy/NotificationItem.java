@@ -1,19 +1,48 @@
 package com.example.social_network_friendy;
 
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+public class NotificationItem {
+    private String username;
+    private String comment;
+    private int likeCount;
+    private int avatarResId;
 
-public class NotificationActivity extends AppCompatActivity {
+    public NotificationItem(String username, String comment, int likeCount, int avatarResId) {
+        this.username = username;
+        this.comment = comment;
+        this.likeCount = likeCount;
+        this.avatarResId = avatarResId;
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
+    // Getter và Setter
+    public String getUsername() {
+        return username;
+    }
 
-        // You can add additional logic here to handle user interactions,
-        // such as loading notifications dynamically.
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getAvatarResId() {
+        return avatarResId;
+    }
+
+    public void setAvatarResId(int avatarResId) {
+        this.avatarResId = avatarResId;
     }
 }
-
-
-
