@@ -14,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterActivity extends Activity {
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;  // Thêm Firestore
+    private FirebaseFirestore db; // Thêm Firestore
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +53,11 @@ public class RegisterActivity extends Activity {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
 
-                                    // Lưu tên người dùng vào Firestore
+                                    // Lưu thông tin người dùng vào Firestore
                                     if (user != null) {
                                         String userId = user.getUid();
-                                        User newUser = new User(username, email);  // Tạo đối tượng User
+                                        User newUser = new User(userId, username, email); // Tạo đối tượng User với userId
 
-                                        // Lưu tên người dùng vào Firestore
                                         db.collection("users")
                                                 .document(userId)
                                                 .set(newUser)
@@ -86,6 +85,7 @@ public class RegisterActivity extends Activity {
 
     // Tạo một lớp User để lưu thông tin người dùng vào Firestore
     public static class User {
+        private String userId;
         private String username;
         private String email;
 
@@ -93,21 +93,30 @@ public class RegisterActivity extends Activity {
             // Constructor mặc định cho Firestore
         }
 
-        public User(String username, String email) {
+        public User(String userId, String username, String email) {
+            this.userId = userId;
             this.username = username;
             this.email = email;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
         }
 
         public String getUsername() {
             return username;
         }
 
-        public String getEmail() {
-            return email;
-        }
-
         public void setUsername(String username) {
             this.username = username;
+        }
+
+        public String getEmail() {
+            return email;
         }
 
         public void setEmail(String email) {
