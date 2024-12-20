@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,19 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class Search extends Activity {
 
@@ -39,7 +32,7 @@ public class Search extends Activity {
     private USER_FINDING_ADAPTER adapter;
 
     private ArrayList<String> userList;
-    private FirebaseFirestore db;
+    private FirebaseDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +55,8 @@ public class Search extends Activity {
         lvFinding.setLayoutManager(new LinearLayoutManager(this));
         lvFinding.setAdapter(adapter);
 
-        // Tham chiếu đến Firestore
-        db = FirebaseFirestore.getInstance();
+        // Tham chiếu đến Firebase Realtime Database
+        db = FirebaseDatabase.getInstance();
 
         // Bắt sự kiện khi nhấn nút tìm kiếm
         btnSearch.setOnClickListener(v -> searchUser(edtFinding.getText().toString().trim()));
@@ -91,20 +84,21 @@ public class Search extends Activity {
             return;
         }
 
-        // Truy vấn tìm kiếm trong Firestore
-        db.collection("users")
-                .whereEqualTo("username", query)
-                .get()
-                .addOnCompleteListener(task -> {
-                    userList.clear();
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                                String username = document.getString("username");
+        // Tham chiếu đến "users" trong Realtime Database
+        DatabaseReference ref = db.getReference("users");
+
+        // Tìm kiếm trong Realtime Database theo username
+        ref.orderByChild("username").equalTo(query)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        userList.clear();
+                        if (snapshot.exists()) {
+                            for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                                String username = userSnapshot.child("username").getValue(String.class);
                                 if (username != null) {
-                                    userList.add(username);  // Thêm tên người dùng vào danh sách
-                                    Log.d("FirestoreData", "Found username: " + username); // Ghi tên người dùng vào Log
+                                    userList.add(username); // Thêm tên người dùng vào danh sách
+                                    Log.d("RealtimeData", "Found username: " + username); // Ghi tên người dùng vào Log
                                     Toast.makeText(Search.this, "Found: " + username, Toast.LENGTH_SHORT).show(); // Hiển thị Toast
                                 }
                             }
@@ -112,11 +106,14 @@ public class Search extends Activity {
                         } else {
                             noResultText.setVisibility(View.VISIBLE); // Hiển thị thông báo "Không có kết quả"
                         }
-                    } else {
-                        noResultText.setText("Lỗi: " + task.getException().getMessage());
+                        adapter.notifyDataSetChanged(); // Cập nhật giao diện danh sách
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        noResultText.setText("Lỗi: " + error.getMessage());
                         noResultText.setVisibility(View.VISIBLE);
                     }
-                    adapter.notifyDataSetChanged();  // Cập nhật giao diện danh sách
                 });
     }
 }
