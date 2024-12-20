@@ -24,7 +24,7 @@
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tên app"
+            android:text="Tên user"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/black" />
@@ -76,26 +76,34 @@
             android:id="@+id/tvLikeCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10"
+            android:text="0"
             android:textSize="14sp" />
 
         <!-- Comment icon -->
         <ImageView
             android:id="@+id/imgComment"
-            android:layout_marginLeft="20dp"
             android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_comment"
+            android:layout_height="match_parent"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="4dp" />
-
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ic_comment" />
         <TextView
             android:id="@+id/tvCommentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:text="0"
             android:textSize="14sp" />
-<!--        android:text="4"-->
+
     </LinearLayout>
+    <!-- Bình luận của người dùng -->
+    <TextView
+        android:id="@+id/commentsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Danh sách bình luận sẽ hiển thị ở đây..."
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>
