@@ -1,6 +1,7 @@
 package com.example.social_network_friendy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +32,7 @@ public class Search extends Activity {
     private TextView noResultText;
     private RecyclerView lvFinding;
     private USER_FINDING_ADAPTER adapter;
-
+    private ImageView imgmainscreen;
     private ArrayList<String> userList;
     private FirebaseDatabase db;
 
@@ -44,6 +46,7 @@ public class Search extends Activity {
         btnSearch = findViewById(R.id.timkiem);
         noResultText = findViewById(R.id.noResultText);
         lvFinding = findViewById(R.id.lvfinding);
+        imgmainscreen=findViewById(R.id.imgbackmainscreen);
 
         // Khởi tạo danh sách và adapter
         userList = new ArrayList<>();
@@ -57,7 +60,14 @@ public class Search extends Activity {
 
         // Tham chiếu đến Firebase Realtime Database
         db = FirebaseDatabase.getInstance();
-
+        // nhấn quay trở lại mainscreen
+        imgmainscreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentmainscreen = new Intent(Search.this, MainActivityScreen.class);
+                startActivity(intentmainscreen);
+            }
+        });
         // Bắt sự kiện khi nhấn nút tìm kiếm
         btnSearch.setOnClickListener(v -> searchUser(edtFinding.getText().toString().trim()));
 
