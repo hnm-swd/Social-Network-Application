@@ -10,20 +10,21 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends Activity {
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db; // Thêm Firestore
+    private DatabaseReference databaseReference; // Thay thế Firestore bằng Realtime Database
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity_layout);
 
-        // Khởi tạo Firebase Auth và Firestore
+        // Khởi tạo Firebase Auth và Database
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users"); // Tạo tham chiếu đến nút "users"
 
         TextView textviewdangnhap = findViewById(R.id.textlogin);
         textviewdangnhap.setOnClickListener(view -> {
@@ -53,14 +54,12 @@ public class RegisterActivity extends Activity {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
 
-                                    // Lưu thông tin người dùng vào Firestore
+                                    // Lưu thông tin người dùng vào Realtime Database
                                     if (user != null) {
                                         String userId = user.getUid();
                                         User newUser = new User(userId, username, email); // Tạo đối tượng User với userId
 
-                                        db.collection("users")
-                                                .document(userId)
-                                                .set(newUser)
+                                        databaseReference.child(userId).setValue(newUser)
                                                 .addOnSuccessListener(aVoid -> {
                                                     // Chuyển sang màn hình đăng nhập
                                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -83,14 +82,14 @@ public class RegisterActivity extends Activity {
         });
     }
 
-    // Tạo một lớp User để lưu thông tin người dùng vào Firestore
+    // Tạo một lớp User để lưu thông tin người dùng vào Realtime Database
     public static class User {
         private String userId;
         private String username;
         private String email;
 
         public User() {
-            // Constructor mặc định cho Firestore
+            // Constructor mặc định cho Realtime Database
         }
 
         public User(String userId, String username, String email) {
