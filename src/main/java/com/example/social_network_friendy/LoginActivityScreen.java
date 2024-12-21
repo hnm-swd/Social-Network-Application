@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
 
         TextView chontextviewdangki = findViewById(R.id.textcreateaccount);
         chontextviewdangki.setOnClickListener(view -> {
-            Intent intentcreateaccount = new Intent(LoginActivity.this, MainActivityScreen.class);
+            Intent intentcreateaccount = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intentcreateaccount);
         });
     }
